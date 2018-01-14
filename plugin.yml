@@ -1,0 +1,25 @@
+name: ChatLogger
+main: ChatLogger\ChatLogger
+version: 1.0.0
+api: 3.0.0-ALPHA10
+
+author: kenygamer
+description: A PocketMine-MP plugin to log your server chat
+
+commands:
+ report:
+  description: Dumps a player chat log at a given date.
+  usage: "/report <player> <date: mm-dd-yyyy>"
+  permission: chatlogger.command.report
+
+permissions:
+ chatlogger:
+  description: Allows access to all ChatLogger features.
+  default: false
+  children:
+   chatlogger.command.report:
+    description: Allows access to the report command.
+    default: op
+   chatlogger.bypass:
+    description: Allows to bypass chat logging.
+    default: false
