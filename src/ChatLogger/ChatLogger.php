@@ -91,7 +91,7 @@ class ChatLogger extends PluginBase implements Listener{
       return true;
     }
     
-    $url = ($this->getConfig()->get("report.use-https", true) ? "https" : "http") . "://" . $this->getConfig()->get("report.host", "chatlogger.herokuapp.com") . "/api.php";
+    $url = ($this->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . "/api.php";
     $reply = Utils::postURL($url, [
       "report" => "yes",
       "player" => $player,
@@ -105,7 +105,7 @@ class ChatLogger extends PluginBase implements Listener{
       return true;
     }
     
-    $sender->sendMessage(TextFormat::RED . "Failed to create report: host " . $this->getConfig()->get("report.host", "chatlogger.herokuapp.com") . " is unavailable");
+    $sender->sendMessage(TextFormat::RED . "Failed to create report: host " . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . " is unavailable");
     return true;
   }
   
