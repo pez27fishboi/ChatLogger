@@ -120,7 +120,7 @@ class ChatLogger extends PluginBase implements Listener{
     
     $player = $event->getPlayer();
     if($player->hasPermission("chatlogger") || $player->hasPermission("chatlogger.bypass")){
-      $this->getLogger()->debug("Failed to log chat message: " . $player->getName() . " has chatlogger.bypass permission");
+      $this->getLogger()->debug("Failed to log chat message: " . $player->getName() . " has chatlogger|chatlogger.bypass permission");
       return;
     }
     
