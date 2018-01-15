@@ -1,6 +1,4 @@
 # ChatLogger
-[![](https://poggit.pmmp.io/shield.state/ChatLogger)](https://poggit.pmmp.io/p/ChatLogger)
-<a href="https://poggit.pmmp.io/p/ChatLogger"><img src="https://poggit.pmmp.io/shield.state/ChatLogger"></a>
 
 ChatLogger is a PocketMine-MP plugin to log your server chat. It features a /report command to dump a player chat log at a given date.
 ## Commands
