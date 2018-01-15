@@ -1,0 +1,7 @@
+---
+
+report:
+ use-https: true
+ host: chatlogger.herokuapp.com
+ 
+...
