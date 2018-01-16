@@ -17,9 +17,13 @@ permissions:
   description: Allows access to all ChatLogger features.
   default: false
   children:
-   chatlogger.command.report:
-    description: Allows access to the report command.
-    default: op
    chatlogger.bypass:
     description: Allows to bypass chat logging.
     default: false
+   chatlogger.command:
+    description: Allows access to all ChatLogger commands.
+    default: false
+    children:
+     chatlogger.command.report:
+      description: Allows access to the ChatLogger report command.
+      default: op
