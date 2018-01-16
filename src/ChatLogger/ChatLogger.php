@@ -46,9 +46,9 @@ class ChatLogger extends PluginBase implements Listener{
   }
   
   public function onDisable() : void{
-    $cfg = new Config($this->getDataFolder()."chatlog.yml", Config::YAML);
-    $cfg->setAll($this->chatlog);
-    $cfg->save();
+    $chatlog = new Config($this->getDataFolder()."chatlog.yml", Config::YAML);
+    $chatlog->setAll($this->chatlog);
+    $chatlog->save();
   }
   
   /**
