@@ -125,7 +125,7 @@ class ChatLogger extends PluginBase implements Listener{
     $message = $event->getMessage();
     
     $this->getServer()->getPluginManager()->callEvent($event = new PlayerChatLogEvent($player, $time, $message));
-    if(!$event->isCancelled() or $this->getConfig()->get("chatlog-force", false) === true){
+    if(!$event->isCancelled() or $this->getConfig()->get("force", false) === true){
       $this->chatlog[strtolower($player->getName())][] = [
         $time,
         $message
