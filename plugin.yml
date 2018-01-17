@@ -1,6 +1,6 @@
 name: ChatLogger
 main: ChatLogger\ChatLogger
-version: 0.9.0
+version: 0.9.0-alpha
 api: 3.0.0-ALPHA10
 
 author: kenygamer
