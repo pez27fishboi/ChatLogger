@@ -1,7 +1,7 @@
 ---
 
 ## Log player chat message even if PlayerChatLogEvent is cancelled?
-chatlog-force: false
+force: false
 report:
  use-https: true
  host: chatlogger.herokuapp.com
