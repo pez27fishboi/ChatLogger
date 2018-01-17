@@ -1,5 +1,6 @@
 ---
 
+## Only for debugging porpuses. RECOMMENDED IT STAYS FALSE
 chatlog-force: false
 report:
  use-https: true
