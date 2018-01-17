@@ -70,16 +70,14 @@ class ChatLogger extends PluginBase implements Listener{
     $date = $args[1];
     
     if(!isset($this->chatlog[$player])){
-      $sender->sendMessage(TextFormat::RED . "Player " . $player . " never chatted before");
+      $sender->sendMessage(TextFormat::RED . "Error: Player {$player} has no chat history.");
       return true;
     }
     
     if(!preg_match_all("/^((0|1)\d{1})-((0|1|2)\d{1})-((19|20)\d{2})/", $date)){
-      $sender->sendMessage(TextFormat::RED . "Please write date using right format");
+      $sender->sendMessage(TextFormat::RED . "Error: Please write date using right format.");
       return true;
     }
-    
-    $sender->sendMessage("Generating report... This can take some time");
     
     $report = [];
     foreach($this->chatlog[$player] as $message){
@@ -87,25 +85,24 @@ class ChatLogger extends PluginBase implements Listener{
     }
     
     if(empty($report)){
-      $sender->sendMessage(TextFormat::RED . "Player " . $player . " did not chat at this date");
+      $sender->sendMessage(TextFormat::RED . "Error: Player {$player} has no chat history for this date.");
       return true;
     }
     
     $url = ($this->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . "/api.php";
-    $reply = Utils::postURL($url, [
-      "report" => "yes",
+    array_push($report, [
       "player" => $player,
-      "date" => $date,
-      "json" => json_encode($report)
+      "date" => $date
       ]);
+    $reply = Utils::postURL($url, $report);
     
-    if($reply !== false and ($data = json_decode($reply)) !== null and isset($data->reportUrl)){
-      $reportUrl = $data->reportUrl;
-      $sender->sendMessage("Report for " . TextFormat::GREEN . $args[0] . TextFormat::WHITE . " successfully generated. See " . TextFormat::GREEN . $reportUrl);
+    if($reply !== false and filter_var($reply, FILTER_VALIDATE_URL)){
+      $sender->sendMessage("Report for " . TextFormat::GREEN . $player . TextFormat::WHITE . " successfully generated.");
+      $sender->sendMessage("URL: " . TextFormat::GREEN . $reply);
       return true;
     }
     
-    $sender->sendMessage(TextFormat::RED . "Failed to create report: host " . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . " is unavailable");
+    $sender->sendMessage(TextFormat::RED . "Error: host " . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . " timed out.");
     return true;
   }
   
