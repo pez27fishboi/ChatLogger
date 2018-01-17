@@ -3,11 +3,11 @@
 ![](https://img.shields.io/github/release/kenygamer/ChatLogger/all.svg)
 ![](https://img.shields.io/github/downloads/kenygamer/ChatLogger/total.svg)
 
-ChatLogger is a PocketMine-MP plugin to log your server chat. It features a /report command to dump a player chat log at a given date.
+ChatLogger is a PocketMine-MP plugin to log your server chat. It features a /export command to dump a player chat log at a given date.
 ## Commands
 | Command | Usage | Description |
 | ------- | ----- | ----------- |
-| `/report` | `/report <player> <date: mm-dd-yy>` | Dumps a player chat log at a given date. |
+| `/export` | `/export <player> <date: mm-dd-yy>` | Dumps a player chat log at a given date. |
 ## Permissions
 ```yml
 chatlogger:
@@ -21,7 +21,7 @@ chatlogger:
    description: Allows access to all ChatLogger commands.
    default: false
    children:
-    chatlogger.command.report:
-     description: Allows access to the ChatLogger report command.
+    chatlogger.command.export:
+     description: Allows access to the ChatLogger export command.
      default: op
 ```
