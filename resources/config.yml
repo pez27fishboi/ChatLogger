@@ -1,6 +1,6 @@
 ---
 
-## Only for debugging porpuses. RECOMMENDED IT STAYS FALSE
+## Log player chat message even if PlayerChatLogEvent is cancelled?
 chatlog-force: false
 report:
  use-https: true
