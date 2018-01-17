@@ -27,9 +27,9 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-use pocketmine\utils\Utils;
 
 use ChatLogger\event\PlayerChatLogEvent;
+use ChatLogger\task\ExportTask;
 
 class ChatLogger extends PluginBase implements Listener{
   
@@ -79,6 +79,8 @@ class ChatLogger extends PluginBase implements Listener{
       return true;
     }
     
+    $sender->sendMessage("Step 1 of 2: Generating report...");
+    
     $report = [];
     foreach($this->chatlog[$player] as $message){
       if(date("m-d-Y", $message[0]) === $date) $report[] = $message;
@@ -89,20 +91,10 @@ class ChatLogger extends PluginBase implements Listener{
       return true;
     }
     
-    $url = ($this->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . "/api.php";
-    array_push($report, [
-      "player" => $player,
-      "date" => $date
-      ]);
-    $reply = Utils::postURL($url, $report);
+    $sender->sendMessage("Step 2 of 2: Uploading report...");
+    $sender->sendMessage("Report is being uploaded in the background");
     
-    if($reply !== false and filter_var($reply, FILTER_VALIDATE_URL)){
-      $sender->sendMessage("Report for " . TextFormat::GREEN . $player . TextFormat::WHITE . " successfully generated.");
-      $sender->sendMessage("URL: " . TextFormat::GREEN . $reply);
-      return true;
-    }
-    
-    $sender->sendMessage(TextFormat::RED . "Error: host " . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . " timed out.");
+    $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($this, $sender, [$player, $date]));
     return true;
   }
   
