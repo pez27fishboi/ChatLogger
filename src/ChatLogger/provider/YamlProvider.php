@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace ChatLogger\provider;
 
 use pocketmine\Player;
+use pocketmine\utils\Config;
 
 use ChatLogger\ChatLogger;
 
@@ -39,4 +40,17 @@ class YamlProvider implements Provider{
       return false;
     }
     $this->chatlog = (new Config($this->plugin->getDataFolder() . "chatlog.yml", Config::YAML))->getAll();
+    return true;
+  }
+  
+  public function getName() : string{
+    return "Yaml";
+  }
+  
+  public function chattedBefore(string $player) : bool{
+    return isset($this->chatlog[strtolower($player)]);
+  }
+  
+  public function logMessage(Player $player, int $time, string $message) : void{
+    $this->chatlog[strtolower($player->getName())][] = [$time, $message];
   }
