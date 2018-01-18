@@ -29,6 +29,8 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
 use ChatLogger\event\PlayerChatLogEvent;
+use ChatLogger\provider\JsonProvider;
+use ChatLogger\provider\YamlProvider;
 use ChatLogger\task\ExportTask;
 
 class ChatLogger extends PluginBase implements Listener{
@@ -42,13 +44,27 @@ class ChatLogger extends PluginBase implements Listener{
       @mkdir($this->getDataFolder());
     }
     $this->saveDefaultConfig();
-    $this->chatlog = (new Config($this->getDataFolder()."chatlog.yml", Config::YAML))->getAll();
+    
+    $provider = strtolower($this->getConfig()->get("provider", "yaml"));
+    switch($provider){
+      case "yaml":
+        $this->provider = new YamlProvider($this);
+        break;
+      case "json":
+        $this->provider = new JsonProvider($this);
+        break;
+      default:
+        $this->getLogger()->warning("Invalid database provider " . $provider . ", resetting to `yaml`");
+        $this->getConfig()->set("provider", "yaml");
+        $this->getConfig()->save();
+        $this->provider = new YamlProvider($this);
+    }
+    $this->provider->open();
+    $this->getLogger()->notice("Database provider was set to: ".$this->provider->getName());
   }
   
   public function onDisable() : void{
-    $chatlog = new Config($this->getDataFolder()."chatlog.yml", Config::YAML);
-    $chatlog->setAll($this->chatlog);
-    $chatlog->save();
+    $this->provider->close();
   }
   
   /**
