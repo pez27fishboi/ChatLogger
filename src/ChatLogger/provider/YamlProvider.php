@@ -54,3 +54,13 @@ class YamlProvider implements Provider{
   public function logMessage(Player $player, int $time, string $message) : void{
     $this->chatlog[strtolower($player->getName())][] = [$time, $message];
   }
+  
+  public function getAll() : array{
+    return $this->chatlog;
+  }
+  
+  public function close() : void{
+    $chatlog = new Config($this->plugin->getDataFolder() . "chatlog.yml", Config::YAML);
+    $chatlog->setAll($this->chatlog);
+    $chatlog->save();
+  }
