@@ -22,3 +22,21 @@ namespace ChatLogger\provider;
 use pocketmine\Player;
 
 use ChatLogger\ChatLogger;
+
+class YamlProvider implements Provider{
+  
+  /** @var ChatLogger */
+  private $plugin;
+  /** @var array|null */
+  private $chatlog = null;
+  
+  public function __construct(ChatLogger $plugin){
+    $this->plugin = $plugin;
+  }
+  
+  public function open() : bool{
+    if($this->chatlog !== null){
+      return false;
+    }
+    $this->chatlog = (new Config($this->plugin->getDataFolder() . "chatlog.yml", Config::YAML))->getAll();
+  }
