@@ -32,11 +32,14 @@ interface Provider{
   }
   
   /**
+   * @return bool
+   */
+  public function open() : bool;
+  
+  /**
    * @return string
    */
-  public function getName() : string{
-    return "Yaml";
-  }
+  public function getName() : string;
   
   /**
    * @param Player $player
