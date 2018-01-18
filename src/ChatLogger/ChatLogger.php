@@ -47,11 +47,11 @@ class ChatLogger extends PluginBase implements Listener{
     
     $provider = strtolower($this->getConfig()->get("provider", "yaml"));
     switch($provider){
-      case "yaml":
-        $this->provider = new YamlProvider($this);
-        break;
       case "json":
         $this->provider = new JsonProvider($this);
+        break;
+      case "yaml":
+        $this->provider = new YamlProvider($this);
         break;
       default:
         $this->getLogger()->warning("Invalid database provider " . $provider . ", resetting to `yaml`");
