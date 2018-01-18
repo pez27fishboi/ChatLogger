@@ -25,5 +25,5 @@ permissions:
     default: false
     children:
      chatlogger.command.export:
-      description: Allows access to the ChatLogger report command.
+      description: Allows access to the ChatLogger export command.
       default: op
