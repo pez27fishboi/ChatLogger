@@ -64,3 +64,5 @@ class YamlProvider implements Provider{
     $chatlog->setAll($this->chatlog);
     $chatlog->save();
   }
+  
+}
