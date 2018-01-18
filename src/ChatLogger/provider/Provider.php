@@ -28,8 +28,7 @@ interface Provider{
   /**
    * @param ChatLogger $plugin
    */
-  public function __construct(ChatLogger $plugin){
-  }
+  public function __construct(ChatLogger $plugin);
   
   /**
    * @return bool
