@@ -1,3 +1,5 @@
+<?php
+
 /*
  * ChatLogger - A PocketMine-MP plugin to log your server chat
  * Copyright (C) 2017 Kevin Andrews <https://github.com/kenygamer/ChatLogger>
@@ -17,4 +19,28 @@ declare(strict_types=1);
 
 namespace ChatLogger\provider;
 
+use ChatLogger\ChatLogger;
+
 interface Provider{
+  
+  /**
+   * @param ChatLogger $plugin
+   */
+  public function __construct(ChatLogger $plugin){
+  }
+  
+  /**
+   * @param string $player
+   *
+   * @return bool
+   */
+  public function chattedBefore(string $player) : bool;
+  
+  /**
+   * @return array
+   */
+  public function getAll() : array;
+  
+  public function close() : void;
+  
+  private function save() : void;
