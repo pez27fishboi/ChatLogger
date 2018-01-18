@@ -42,11 +42,18 @@ interface Provider{
   public function getName() : string;
   
   /**
-   * @param Player $player
+   * @param string $player
    *
    * @return bool
    */
-  public function chattedBefore(Player $player) : bool;
+  public function chattedBefore(string $player) : bool;
+  
+  /**
+   * @param Player $player
+   *
+   * @return void
+   */
+  public function logMessage(Player $player) : void;
   
   /**
    * @return array
