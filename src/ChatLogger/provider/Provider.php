@@ -19,6 +19,8 @@ declare(strict_types=1);
 
 namespace ChatLogger\provider;
 
+use pocketmine\Player;
+
 use ChatLogger\ChatLogger;
 
 interface Provider{
@@ -30,17 +32,25 @@ interface Provider{
   }
   
   /**
-   * @param string $player
+   * @return string
+   */
+  public function getName() : string{
+    return "Yaml";
+  }
+  
+  /**
+   * @param Player $player
    *
    * @return bool
    */
-  public function chattedBefore(string $player) : bool;
+  public function chattedBefore(Player $player) : bool;
   
   /**
    * @return array
    */
   public function getAll() : array;
   
+  /**
+   * @return void
+   */
   public function close() : void;
-  
-  private function save() : void;
