@@ -15,6 +15,8 @@
  * GNU General Public License for more details.
 */
 
+namespace ChatLogger\task;
+
 use pocketmine\command\CommandSender;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
