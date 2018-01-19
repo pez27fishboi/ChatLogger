@@ -37,6 +37,8 @@ class ChatLogger extends PluginBase implements Listener{
   
   /** @var array */
   private $chatlog;
+  /** @var Provider */
+  private $provider;
   
   public function onEnable() : void{
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
