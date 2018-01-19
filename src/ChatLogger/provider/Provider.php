@@ -49,19 +49,16 @@ interface Provider{
   
   /**
    * @param Player $player
-   *
-   * @return void
    */
   public function logMessage(Player $player, int $time, string $message) : void;
   
   /**
+   * @param string $player
+   *
    * @return array
    */
-  public function getAll() : array;
+  public function getMessages(string $player) : array;
   
-  /**
-   * @return void
-   */
   public function close() : void;
   
 }
