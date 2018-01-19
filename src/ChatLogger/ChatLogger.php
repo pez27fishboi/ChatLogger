@@ -121,7 +121,7 @@ class ChatLogger extends PluginBase implements Listener{
       "player" => $player,
       "date" => $date
       ]);
-    $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($this, $sender, $report));
+    $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($sender->getName(), $player, $report));
     return true;
   }
   
