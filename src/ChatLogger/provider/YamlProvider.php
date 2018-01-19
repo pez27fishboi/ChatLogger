@@ -56,7 +56,7 @@ class YamlProvider implements Provider{
   }
   
   public function getMessages(string $player) : array{
-    return $this->chatlog[$player];
+    return $this->chatlog[strtolower($player)];
   }
   
   public function close() : void{
