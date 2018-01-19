@@ -105,7 +105,7 @@ class ChatLogger extends PluginBase implements Listener{
     $report = [];
     foreach($this->provider->getAll() as $pl){
       if($player === $pl){
-        foreach($player as $messages){
+        foreach($pl as $messages){
           foreach($messages as $message){
             if(date("m-d-Y", $message[0]) === $date) $report["messages"] = $message;
           }
