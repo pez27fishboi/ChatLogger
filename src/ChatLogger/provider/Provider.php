@@ -52,7 +52,7 @@ interface Provider{
    *
    * @return void
    */
-  public function logMessage(Player $player) : void;
+  public function logMessage(Player $player, int $time, string $message) : void;
   
   /**
    * @return array
