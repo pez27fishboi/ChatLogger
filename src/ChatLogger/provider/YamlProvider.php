@@ -55,8 +55,8 @@ class YamlProvider implements Provider{
     $this->chatlog[strtolower($player->getName())][] = [$time, $message];
   }
   
-  public function getAll() : array{
-    return $this->chatlog;
+  public function getMessages(string $player) : array{
+    return $this->chatlog[$player];
   }
   
   public function close() : void{
