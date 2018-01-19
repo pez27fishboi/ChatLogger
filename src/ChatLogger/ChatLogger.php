@@ -117,10 +117,8 @@ class ChatLogger extends PluginBase implements Listener{
     $sender->sendMessage("Step 2 of 2: Uploading report...");
     $sender->sendMessage("Report is being uploaded in the background");
     
-    array_push($report, [
-      "player" => $player,
-      "date" => $date
-      ]);
+    $report["player"] = $player;
+    $report["date"] = $date;
     $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($sender->getName(), $player, $report));
     return true;
   }
