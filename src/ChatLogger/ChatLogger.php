@@ -30,6 +30,7 @@ use pocketmine\utils\TextFormat;
 
 use ChatLogger\event\PlayerChatLogEvent;
 use ChatLogger\provider\JsonProvider;
+use ChatLogger\provider\Provider;
 use ChatLogger\provider\YamlProvider;
 use ChatLogger\task\ExportTask;
 
@@ -66,7 +67,9 @@ class ChatLogger extends PluginBase implements Listener{
   }
   
   public function onDisable() : void{
-    $this->provider->close();
+    if($this->provider instanceof Provider){
+      $this->provider->close();
+    }
   }
   
   /**
