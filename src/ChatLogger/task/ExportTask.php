@@ -48,7 +48,7 @@ class ExportTask extends AsyncTask{
     $this->reply = Utils::postURL($this->fqdn, [
       "player" => $report["player"],
       "date" => $report["date"],
-      "messages" => $report["messages"]));
+      "messages" => $report["messages"]);
   }
   
   /**
