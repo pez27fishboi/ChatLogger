@@ -48,7 +48,7 @@ class ExportTask extends AsyncTask{
     $this->reply = Utils::postURL($this->fqdn, [
       "player" => $this->report["player"],
       "date" => $this->report["date"],
-      "messages" => $this->report["messages"]]);
+      "messages" => json_encode($this->report["messages"])]);
   }
   
   /**
@@ -60,7 +60,7 @@ class ExportTask extends AsyncTask{
         $sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
         $sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
       }else{
-        $sender->sendMessage(TextFormat::RED . "Error: host {$this->fqdn} timed out.");
+        $sender->sendMessage(TextFormat::RED . "Error: host " . str_replace(["http://", "https://"], "", $this->fqdn) . " timed out.");
       }
     }
   }
