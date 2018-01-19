@@ -100,7 +100,7 @@ class ChatLogger extends PluginBase implements Listener{
       return true;
     }
     
-    $sender->sendMessage("Step 1 of 2: Generating report...");
+    $sender->sendMessage("Step " . TextFormat::GREEN . "1" . TextFormat::WHITE . " of " . TextFormat::GREEN . "2" . TextFormat::WHITE . ": Generating report...");
     
     $report["messages"] = [];
     foreach($this->provider->getMessages($player) as $message){
@@ -114,7 +114,7 @@ class ChatLogger extends PluginBase implements Listener{
       return true;
     }
     
-    $sender->sendMessage("Step 2 of 2: Uploading report...");
+    $sender->sendMessage("Step " . TextFormat::GREEN . "2" . TextFormat::WHITE . " of " . TextFormat::GREEN . "2" . TextFormat::WHITE . ": Uploading report...");
     $sender->sendMessage("Report is being uploaded in the background");
     
     $report["player"] = $player;
