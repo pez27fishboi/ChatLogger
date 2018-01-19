@@ -20,46 +20,43 @@ namespace ChatLogger\task;
 use pocketmine\command\CommandSender;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
-
-use ChatLogger\ChatLogger;
+use pocketmine\utils\TextFormat;
+use pocketmine\utils\Utils;
 
 class ExportTask extends AsyncTask{
   
-  /** @var ChatLogger */
-  private $plugin;
-  /** @var CommandSender */
+  /** @var string */
   private $sender;
   /** @var array */
   private $report;
-  /** @var string|bool */
-  private $reply = false;
+  /** @var string */
+  private $fqdn;
+  /** @var bool|string */
+  private $reply;
   
   /**
-   * @param ChatLogger $plugin
-   * @param CommandSender $sender
+   * @param string $sender
    * @param array $report
    */
-  public function __construct(ChatLogger $plugin, CommandSender $sender, array $report){
-    $this->plugin = $plugin;
+  public function __construct(string $sender, array $report){
     $this->sender = $sender;
     $this->report = $report;
   }
   
   public function onRun(){
-    $url = ($this->plugin->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->plugin->getConfig()->getNested("report.host", "chatlogger.herokuapp.com");
-    $this->reply = Utils::postURL($url, $this->report);
+    $this->reply = Utils::postURL($this->fqdn, $this->report);
   }
   
   /**
    * @param Server $server
    */
   public function onCompletion(Server $server){
-    if($this->reply !== false and filter_var($this->reply, FILTER_VALIDATE_URL)){
-      $this->sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
-      $this->sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
-    }else{
-      $this->sender->sendMessage(TextFormat::RED . "Error: host " . $this->plugin->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . " timed out.");
+    if(($sender = $server->getPlayer($this->sender)) !== null){
+      if($this->reply !== false and filter_var($this->reply, FILTER_VALIDATE_URL)){
+        $sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
+        $sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
+      }else{
+        $sender->sendMessage(TextFormat::RED . "Error: host {$this->fqdn} timed out.");
+      }
     }
   }
-  
-}
