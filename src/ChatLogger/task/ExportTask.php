@@ -38,8 +38,9 @@ class ExportTask extends AsyncTask{
    * @param string $sender
    * @param array $report
    */
-  public function __construct(string $sender, array $report){
+  public function __construct(string $sender, string $fqdn, array $report){
     $this->sender = $sender;
+    $this->fqdn = $fqdn;
     $this->report = $report;
   }
   
