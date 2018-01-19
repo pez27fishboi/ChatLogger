@@ -103,17 +103,17 @@ class ChatLogger extends PluginBase implements Listener{
     $sender->sendMessage("Step 1 of 2: Generating report...");
     
     $report = [];
-    foreach($this->provider->getAll() as $pl){
-      if($player === $pl){
-        foreach($pl as $messages){
+    foreach($this->provider->getAll() as $p){
+      if($player === $p){
+        foreach($p as $messages){
           foreach($messages as $message){
-            if(date("m-d-Y", $message[0]) === $date) $report["messages"] = $message;
+            if(date("m-d-Y", $message[0]) === $date) $report["messages"][] = $message;
           }
         }
       }
     }
     
-    if(empty($report)){
+    if(!isset($report["messages"])){
       $sender->sendMessage(TextFormat::RED . "Error: Player {$player} has no chat history for this date.");
       return true;
     }
