@@ -46,7 +46,7 @@ class ExportTask extends AsyncTask{
   }
   
   public function onRun(){
-    $url = ($this->plugin->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->plugin->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . "/api/";
+    $url = ($this->plugin->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->plugin->getConfig()->getNested("report.host", "chatlogger.herokuapp.com");
     $this->reply = Utils::postURL($url, $this->report);
   }
   
