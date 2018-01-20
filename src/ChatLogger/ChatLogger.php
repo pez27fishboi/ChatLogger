@@ -27,14 +27,19 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-use pocketmine\utils\Utils;
 
 use ChatLogger\event\PlayerChatLogEvent;
+use ChatLogger\provider\JsonProvider;
+use ChatLogger\provider\Provider;
+use ChatLogger\provider\YamlProvider;
+use ChatLogger\task\ExportTask;
 
 class ChatLogger extends PluginBase implements Listener{
   
   /** @var array */
   private $chatlog;
+  /** @var Provider */
+  private $provider;
   
   public function onEnable() : void{
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -42,13 +47,29 @@ class ChatLogger extends PluginBase implements Listener{
       @mkdir($this->getDataFolder());
     }
     $this->saveDefaultConfig();
-    $this->chatlog = (new Config($this->getDataFolder()."chatlog.yml", Config::YAML))->getAll();
+    
+    $provider = strtolower($this->getConfig()->get("provider", "yaml"));
+    switch($provider){
+      case "json":
+        $this->provider = new JsonProvider($this);
+        break;
+      case "yaml":
+        $this->provider = new YamlProvider($this);
+        break;
+      default:
+        $this->getLogger()->warning("Invalid database provider " . $provider . ", resetting to `yaml`");
+        $this->getConfig()->set("provider", "yaml");
+        $this->getConfig()->save();
+        $this->provider = new YamlProvider($this);
+    }
+    $this->provider->open();
+    $this->getLogger()->notice("Database provider was set to: ".$this->provider->getName());
   }
   
   public function onDisable() : void{
-    $chatlog = new Config($this->getDataFolder()."chatlog.yml", Config::YAML);
-    $chatlog->setAll($this->chatlog);
-    $chatlog->save();
+    if($this->provider instanceof Provider){
+      $this->provider->close();
+    }
   }
   
   /**
@@ -69,43 +90,37 @@ class ChatLogger extends PluginBase implements Listener{
     $player = strtolower($args[0]);
     $date = $args[1];
     
-    if(!isset($this->chatlog[$player])){
-      $sender->sendMessage(TextFormat::RED . "Player " . $player . " never chatted before");
+    if(!$this->provider->chattedBefore($player)){
+      $sender->sendMessage(TextFormat::RED . "Error: Player {$player} has no chat history.");
       return true;
     }
     
     if(!preg_match_all("/^((0|1)\d{1})-((0|1|2)\d{1})-((19|20)\d{2})/", $date)){
-      $sender->sendMessage(TextFormat::RED . "Please write date using right format");
+      $sender->sendMessage(TextFormat::RED . "Error: Please write date using right format.");
       return true;
     }
     
-    $sender->sendMessage("Generating report... This can take some time");
+    $sender->sendMessage("Step " . TextFormat::GREEN . "1" . TextFormat::WHITE . " of " . TextFormat::GREEN . "2" . TextFormat::WHITE . ": Generating report...");
     
-    $report = [];
-    foreach($this->chatlog[$player] as $message){
-      if(date("m-d-Y", $message[0]) === $date) $report[] = $message;
+    $report["messages"] = [];
+    foreach($this->provider->getMessages($player) as $message){
+      if(date("m-d-Y", $message[0]) === $date){
+        $report["messages"][] = $message;
+      }
     }
-    
-    if(empty($report)){
-      $sender->sendMessage(TextFormat::RED . "Player " . $player . " did not chat at this date");
+      
+    if(empty($report["messages"])){
+      $sender->sendMessage(TextFormat::RED . "Error: Player {$player} has no chat history for this date.");
       return true;
     }
     
-    $url = ($this->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . "/api.php";
-    $reply = Utils::postURL($url, [
-      "report" => "yes",
-      "player" => $player,
-      "date" => $date,
-      "json" => json_encode($report)
-      ]);
+    $sender->sendMessage("Step " . TextFormat::GREEN . "2" . TextFormat::WHITE . " of " . TextFormat::GREEN . "2" . TextFormat::WHITE . ": Uploading report...");
+    $sender->sendMessage("Report is being uploaded in the background");
     
-    if($reply !== false and ($data = json_decode($reply)) !== null and isset($data->reportUrl)){
-      $reportUrl = $data->reportUrl;
-      $sender->sendMessage("Report for " . TextFormat::GREEN . $args[0] . TextFormat::WHITE . " successfully generated. See " . TextFormat::GREEN . $reportUrl);
-      return true;
-    }
-    
-    $sender->sendMessage(TextFormat::RED . "Failed to create report: host " . $this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com") . " is unavailable");
+    $report["player"] = $player;
+    $report["date"] = $date;
+    $fqdn = ($this->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . ($this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com"));
+    $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($sender->getName(), $fqdn, $report));
     return true;
   }
   
@@ -128,11 +143,8 @@ class ChatLogger extends PluginBase implements Listener{
     $message = $event->getMessage();
     
     $this->getServer()->getPluginManager()->callEvent($event = new PlayerChatLogEvent($player, $time, $message));
-    if(!$event->isCancelled() or $this->getConfig()->get("chatlog-force", false) === true){
-      $this->chatlog[strtolower($player->getName())][] = [
-        $time,
-        $message
-        ];
+    if(!$event->isCancelled() or $this->getConfig()->get("force", false) === true){
+      $this->provider->logMessage($player, $time, $message);
       return;
     }
     $this->getLogger()->debug("Failed to log chat message: PlayerChatLogEvent is cancelled");

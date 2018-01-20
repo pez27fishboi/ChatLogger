@@ -1,6 +1,11 @@
 ---
 
-chatlog-force: false
+# force: Log player chat message even if PlayerChatLogEvent is cancelled?
+force: false
+
+# provider: Set provider of database (Available: yaml, json)
+provider: yaml
+
 report:
  use-https: true
  host: chatlogger.herokuapp.com

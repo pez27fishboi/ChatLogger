@@ -7,10 +7,10 @@ author: kenygamer
 description: A PocketMine-MP plugin to log your server chat
 
 commands:
- report:
+ export:
   description: Dumps a player chat log at a given date.
-  usage: "/report <player> <date: mm-dd-yyyy>"
-  permission: chatlogger.command.report
+  usage: "/export <player> <date: mm-dd-yyyy>"
+  permission: chatlogger.command.export
 
 permissions:
  chatlogger:
@@ -24,6 +24,6 @@ permissions:
     description: Allows access to all ChatLogger commands.
     default: false
     children:
-     chatlogger.command.report:
-      description: Allows access to the ChatLogger report command.
+     chatlogger.command.export:
+      description: Allows access to the ChatLogger export command.
       default: op
