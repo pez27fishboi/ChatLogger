@@ -3,7 +3,7 @@
 ![](https://img.shields.io/github/release/kenygamer/ChatLogger/all.svg)
 ![](https://img.shields.io/github/downloads/kenygamer/ChatLogger/total.svg)
 
-ChatLogger is a PocketMine-MP plugin to log your server chat. It features a /export command to dump a player chat log at a given date.
+ChatLogger is a PocketMine-MP plugin to log your server chat, keeping the performance in mind. It features a /export command to dump a player chat log at a given date.
 ## Commands
 | Command | Usage | Description |
 | ------- | ----- | ----------- |
