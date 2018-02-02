@@ -4,7 +4,7 @@ version: 1.0.0-beta
 api: 3.0.0-ALPHA10
 
 author: kenygamer
-description: A PocketMine-MP plugin to log your server chat
+description: A PocketMine-MP plugin to log your server chat, keeping the perfomance in mind
 
 commands:
  export:
