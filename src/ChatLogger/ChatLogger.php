@@ -126,6 +126,8 @@ class ChatLogger extends PluginBase implements Listener{
   
   /**
    * @param PlayerChatEvent $event
+   *
+   * @priority MONITOR
    */
   public function onChat(PlayerChatEvent $event) : void{
     if($event->isCancelled()){
