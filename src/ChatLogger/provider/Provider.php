@@ -31,16 +31,22 @@ interface Provider{
   public function __construct(ChatLogger $plugin);
   
   /**
+   * Opens the database provider.
+   *
    * @return bool
    */
   public function open() : bool;
   
   /**
+   * Returns the database provider name.
+   *
    * @return string
    */
   public function getName() : string;
   
   /**
+   * Returns whether the player has chat history or not
+   *
    * @param string $player
    *
    * @return bool
@@ -48,17 +54,26 @@ interface Provider{
   public function chattedBefore(string $player) : bool;
   
   /**
+   * Adds the player chat message to the chat log.
+   *
    * @param Player $player
+   * @param int $time
+   * @param string $message
    */
   public function logMessage(Player $player, int $time, string $message) : void;
   
   /**
+   * Returns all the messages sent by a player.
+   *
    * @param string $player
    *
    * @return array
    */
   public function getMessages(string $player) : array;
   
+  /**
+   * Closes the database provider.
+   */
   public function close() : void;
   
 }
