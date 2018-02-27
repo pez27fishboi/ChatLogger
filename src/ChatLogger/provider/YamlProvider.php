@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace ChatLogger\provider;
 
-use pocketmine\Player;
 use pocketmine\utils\Config;
 
 use ChatLogger\ChatLogger;
