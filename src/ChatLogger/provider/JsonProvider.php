@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace ChatLogger\provider;
 
-use pocketmine\Player;
 use pocketmine\utils\Config;
 
 use ChatLogger\ChatLogger;
@@ -50,7 +49,7 @@ class JsonProvider implements Provider{
     return isset($this->chatlog[$player]);
   }
   
-  public function logMessage(Player $player, int $time, string $message) : void{
+  public function logMessage(string $player, int $time, string $message) : void{
     $this->chatlog[$player][] = [$time, $message];
   }
   
