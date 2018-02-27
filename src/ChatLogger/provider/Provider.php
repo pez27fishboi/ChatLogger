@@ -19,8 +19,6 @@ declare(strict_types=1);
 
 namespace ChatLogger\provider;
 
-use pocketmine\Player;
-
 use ChatLogger\ChatLogger;
 
 interface Provider{
@@ -56,11 +54,11 @@ interface Provider{
   /**
    * Adds the player chat message to the chat log.
    *
-   * @param Player $player
+   * @param string $player
    * @param int $time
    * @param string $message
    */
-  public function logMessage(Player $player, int $time, string $message) : void;
+  public function logMessage(string $player, int $time, string $message) : void;
   
   /**
    * Returns all the messages sent by a player.
