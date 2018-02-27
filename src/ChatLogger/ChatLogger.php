@@ -29,20 +29,20 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
 use ChatLogger\event\PlayerChatLogEvent;
-use ChatLogger\provider\JsonProvider;
+
 use ChatLogger\provider\Provider;
+use ChatLogger\provider\JsonProvider;
 use ChatLogger\provider\YamlProvider;
+
 use ChatLogger\task\ExportTask;
 
 class ChatLogger extends PluginBase implements Listener{
-  
-  /** @var array */
-  private $chatlog;
   /** @var Provider */
   private $provider;
   
   public function onEnable() : void{
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
+    
     if(!is_dir($this->getDataFolder())){
       @mkdir($this->getDataFolder());
     }
@@ -63,13 +63,20 @@ class ChatLogger extends PluginBase implements Listener{
         $this->provider = new YamlProvider($this);
     }
     $this->provider->open();
-    $this->getLogger()->notice("Database provider was set to: ".$this->provider->getName());
+    $this->getLogger()->notice("Database provider was set to: " . $this->provider->getName());
   }
   
   public function onDisable() : void{
     if($this->provider instanceof Provider){
       $this->provider->close();
     }
+  }
+  
+  /**
+   * @return Provider
+   */
+  public function getProvider() : Provider{
+    return $this->provider;
   }
   
   /**
@@ -85,12 +92,14 @@ class ChatLogger extends PluginBase implements Listener{
       $sender->sendMessage(TextFormat::RED . "Command must be used in-game.");
       return true;
     }
-    if(count($args) !== 2) return false;
+    if(count($args) < 2){
+      return false;
+    }
     
-    $player = strtolower($args[0]);
+    $player = $player->getLowerCaseName();
     $date = $args[1];
     
-    if(!$this->provider->chattedBefore($player)){
+    if(!$this->getProvider()->chattedBefore($player)){
       $sender->sendMessage(TextFormat::RED . "Error: Player {$player} has no chat history.");
       return true;
     }
@@ -103,7 +112,7 @@ class ChatLogger extends PluginBase implements Listener{
     $sender->sendMessage("Step " . TextFormat::GREEN . "1" . TextFormat::WHITE . " of " . TextFormat::GREEN . "2" . TextFormat::WHITE . ": Generating report...");
     
     $report["messages"] = [];
-    foreach($this->provider->getMessages($player) as $message){
+    foreach($this->getProvider()->getMessages($player) as $message){
       if(date("m-d-Y", $message[0]) === $date){
         $report["messages"][] = $message;
       }
@@ -146,7 +155,7 @@ class ChatLogger extends PluginBase implements Listener{
     
     $this->getServer()->getPluginManager()->callEvent($event = new PlayerChatLogEvent($player, $time, $message));
     if(!$event->isCancelled() or $this->getConfig()->get("force", false) === true){
-      $this->provider->logMessage($player, $time, $message);
+      $this->getProvider()->logMessage($player, $time, $message);
       return;
     }
     $this->getLogger()->debug("Failed to log chat message: PlayerChatLogEvent is cancelled");
