@@ -1,13 +1,11 @@
----
-
-# force: Log player chat message even if PlayerChatLogEvent is cancelled?
+# force: Whether to force chat log if PlayerChatLogEvent is cancelled or not
 force: false
 
 # provider: Set provider of database (Available: yaml, json)
 provider: yaml
 
 report:
+ # report.use-https: Whether to use SSL or not
  use-https: true
+ # report.host: Set host to export generated report
  host: chatlogger.herokuapp.com
- 
-...
