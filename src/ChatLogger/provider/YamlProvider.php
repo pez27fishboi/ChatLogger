@@ -25,11 +25,10 @@ use pocketmine\utils\Config;
 use ChatLogger\ChatLogger;
 
 class YamlProvider implements Provider{
-  
   /** @var ChatLogger */
   private $plugin;
   /** @var array|null */
-  private $chatlog = null;
+  private $chatlog;
   
   public function __construct(ChatLogger $plugin){
     $this->plugin = $plugin;
@@ -48,15 +47,15 @@ class YamlProvider implements Provider{
   }
   
   public function chattedBefore(string $player) : bool{
-    return isset($this->chatlog[strtolower($player)]);
+    return isset($this->chatlog[$player]);
   }
   
   public function logMessage(Player $player, int $time, string $message) : void{
-    $this->chatlog[strtolower($player->getName())][] = [$time, $message];
+    $this->chatlog[$player][] = [$time, $message];
   }
   
   public function getMessages(string $player) : array{
-    return $this->chatlog[strtolower($player)];
+    return $this->chatlog[$player];
   }
   
   public function close() : void{
