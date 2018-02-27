@@ -18,6 +18,8 @@
 namespace ChatLogger\task;
 
 use pocketmine\command\CommandSender;
+use pocketmine\command\ConsoleCommandSender;
+use pocketmine\Player;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
@@ -55,13 +57,19 @@ class ExportTask extends AsyncTask{
    * @param Server $server
    */
   public function onCompletion(Server $server){
-    if(($sender = $server->getPlayer($this->sender)) !== null or $sender === "CONSOLE"){
-      if($this->reply !== false and filter_var($this->reply, FILTER_VALIDATE_URL)){
-        $sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
-        $sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
-      }else{
-        $sender->sendMessage(TextFormat::RED . "Error: host " . str_replace(["http://", "https://"], "", $this->fqdn) . " timed out. Please try again.");
+    if($this->sender === "CONSOLE"){
+      $sender = new ConsoleCommandSender();
+    }else{
+      $sender = $server->getPlayerExact($this->sender);
+      if(!$sender instanceof Player){
+        return;
       }
+    }
+    if($this->reply !== false and filter_var($this->reply, FILTER_VALIDATE_URL)){
+      $sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
+      $sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
+    }else{
+      $sender->sendMessage(TextFormat::RED . "Error: host " . str_replace(["http://", "https://"], "", $this->fqdn) . " timed out. Please try again.");
     }
   }
   
