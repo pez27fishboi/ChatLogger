@@ -45,7 +45,7 @@ interface Provider{
   public function getName() : string;
   
   /**
-   * Returns whether the player has chat history or not
+   * Returns whether the player has chat history or not.
    *
    * @param string $player
    *
