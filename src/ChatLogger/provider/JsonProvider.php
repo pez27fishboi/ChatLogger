@@ -48,15 +48,15 @@ class JsonProvider implements Provider{
   }
   
   public function chattedBefore(string $player) : bool{
-    return isset($this->chatlog[strtolower($player)]);
+    return isset($this->chatlog[$player]);
   }
   
   public function logMessage(Player $player, int $time, string $message) : void{
-    $this->chatlog[strtolower($player->getName())][] = [$time, $message];
+    $this->chatlog[$player][] = [$time, $message];
   }
   
   public function getMessages(string $player) : array{
-    return $this->chatlog[strtolower($player)];
+    return $this->chatlog[$player];
   }
   
   public function close() : void{
