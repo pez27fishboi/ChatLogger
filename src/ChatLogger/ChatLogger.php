@@ -125,7 +125,7 @@ class ChatLogger extends PluginBase implements Listener{
     $report["player"] = $player;
     $report["date"] = $date;
     $fqdn = ($this->getConfig()->getNested("report.use-https", true) ? "https" : "http") . "://" . ($this->getConfig()->getNested("report.host", "chatlogger.herokuapp.com"));
-    $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($sender, $fqdn, $report));
+    $this->getServer()->getScheduler()->scheduleAsyncTask(new ExportTask($sender->getName(), $fqdn, $report));
     return true;
   }
   
