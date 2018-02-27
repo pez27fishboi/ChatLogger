@@ -88,15 +88,11 @@ class ChatLogger extends PluginBase implements Listener{
    * @return bool
    */
   public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
-    if(!$sender instanceof Player){
-      $sender->sendMessage(TextFormat::RED . "Command must be used in-game.");
-      return true;
-    }
     if(count($args) < 2){
       return false;
     }
     
-    $player = $player->getLowerCaseName();
+    $player = strtolower($args[0]);
     $date = $args[1];
     
     if(!$this->getProvider()->chattedBefore($player)){
