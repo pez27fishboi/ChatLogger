@@ -24,7 +24,6 @@ use pocketmine\event\plugin\PluginEvent;
 use pocketmine\Player;
 
 class PlayerChatLogEvent extends PluginEvent implements Cancellable{
-  
   public static $handlerList = null;
   
   /** @var Player */
@@ -34,6 +33,11 @@ class PlayerChatLogEvent extends PluginEvent implements Cancellable{
   /** @var string */
   private $message;
   
+  /**
+   * @param Player $player
+   * @param int $time
+   * @param string $message
+   */
   public function __construct(Player $player, int $time, string $message){
     $this->player = $player;
     $this->time = $time;
@@ -41,6 +45,8 @@ class PlayerChatLogEvent extends PluginEvent implements Cancellable{
   }
   
   /**
+   * Returns the player who was chat logged.
+   *
    * @return Player
    */
   public function getPlayer() : Player{
@@ -48,6 +54,8 @@ class PlayerChatLogEvent extends PluginEvent implements Cancellable{
   }
   
   /**
+   * Returns the timestamp the player was chat logged at.
+   *
    * @return int
    */
   public function getTime() : int{
@@ -55,6 +63,8 @@ class PlayerChatLogEvent extends PluginEvent implements Cancellable{
   }
   
   /**
+   * Returns the player chat message.
+   *
    * @return string
    */
   public function getMessage() : string{
