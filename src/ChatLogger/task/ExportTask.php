@@ -26,10 +26,10 @@ use pocketmine\utils\Utils;
 class ExportTask extends AsyncTask{
   /** @var string */
   private $sender;
-  /** @var array */
-  private $report;
   /** @var string */
   private $fqdn;
+  /** @var array */
+  private $report;
   /** @var bool|string */
   private $reply = false;
   
@@ -47,14 +47,15 @@ class ExportTask extends AsyncTask{
     $this->reply = Utils::postURL($this->fqdn, [
       "player" => $this->report["player"],
       "date" => $this->report["date"],
-      "messages" => json_encode((array)$this->report["messages"])]);
+      "messages" => json_encode((array) $this->report["messages"])]);
   }
+  
   
   /**
    * @param Server $server
    */
   public function onCompletion(Server $server){
-    if(($sender = $server->getPlayer($this->sender)) !== null){
+    if(($sender = $server->getPlayer($this->sender)) !== null or $sender === "CONSOLE"){
       if($this->reply !== false and filter_var($this->reply, FILTER_VALIDATE_URL)){
         $sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
         $sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
