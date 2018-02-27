@@ -50,7 +50,7 @@ class YamlProvider implements Provider{
     return isset($this->chatlog[$player]);
   }
   
-  public function logMessage(Player $player, int $time, string $message) : void{
+  public function logMessage(string $player, int $time, string $message) : void{
     $this->chatlog[$player][] = [$time, $message];
   }
   
