@@ -24,7 +24,6 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
 
 class ExportTask extends AsyncTask{
-  
   /** @var string */
   private $sender;
   /** @var array */
@@ -32,7 +31,7 @@ class ExportTask extends AsyncTask{
   /** @var string */
   private $fqdn;
   /** @var bool|string */
-  private $reply;
+  private $reply = false;
   
   /**
    * @param string $sender
