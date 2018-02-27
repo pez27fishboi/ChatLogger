@@ -24,12 +24,11 @@ use pocketmine\utils\Config;
 
 use ChatLogger\ChatLogger;
 
-class JsonProvider implements Provider{
-  
+class JsonProvider implements Provider{ 
   /** @var ChatLogger */
   private $plugin;
   /** @var array|null */
-  private $chatlog = null;
+  private $chatlog;
   
   public function __construct(ChatLogger $plugin){
     $this->plugin = $plugin;
