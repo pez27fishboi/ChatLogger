@@ -151,7 +151,7 @@ class ChatLogger extends PluginBase implements Listener{
     
     $this->getServer()->getPluginManager()->callEvent($event = new PlayerChatLogEvent($player, $time, $message));
     if(!$event->isCancelled() or $this->getConfig()->get("force", false) === true){
-      $this->getProvider()->logMessage($player->getName(), $time, $message);
+      $this->getProvider()->logMessage($player->getLowerCaseName(), $time, $message);
       return;
     }
     $this->getLogger()->debug("Failed to log chat message: PlayerChatLogEvent is cancelled");
