@@ -60,7 +60,7 @@ class ExportTask extends AsyncTask{
         $sender->sendMessage("Report for " . TextFormat::GREEN . $this->report["player"] . TextFormat::WHITE . " successfully uploaded.");
         $sender->sendMessage("URL: " . TextFormat::GREEN . $this->reply);
       }else{
-        $sender->sendMessage(TextFormat::RED . "Error: host " . str_replace(["http://", "https://"], "", $this->fqdn) . " timed out.");
+        $sender->sendMessage(TextFormat::RED . "Error: host " . str_replace(["http://", "https://"], "", $this->fqdn) . " timed out. Please try again.");
       }
     }
   }
